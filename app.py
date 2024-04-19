@@ -101,8 +101,6 @@ async def play(ctx,url):
         print(e)
         await ctx.send("An error occurred while trying to play the song.")
 
-
-
 @bot.command(name='pause', help='This command pauses the song')
 async def pause(ctx):
     voice_client = ctx.message.guild.voice_client
