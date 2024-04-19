@@ -125,7 +125,7 @@ async def stop(ctx):
     else:
         await ctx.send("The bot is not playing anything at the moment.")
 
-@bot.command(name='inspire', help='inspires with a quote')
+@bot.command(name='quote', help='inspires with a quote')
 async def on_message(ctx):
     quote = get_quote()
     await ctx.channel.send(quote)
