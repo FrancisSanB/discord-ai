@@ -3,8 +3,6 @@ from discord.ext import commands,tasks
 import os
 from dotenv import load_dotenv
 import yt_dlp as youtube_dl
-import requests
-import json
 
 load_dotenv()
 
@@ -124,17 +122,6 @@ async def stop(ctx):
         await voice_client.stop()
     else:
         await ctx.send("The bot is not playing anything at the moment.")
-
-@bot.command(name='inspire', help='inspires with a quote')
-async def on_message(ctx):
-    quote = get_quote()
-    await ctx.channel.send(quote)
-
-def get_quote():
-    response = requests.get("https://zenquotes.io/api/random")
-    json_data = json.loads(response.text)
-    quote = json_data[0]['q'] + " -" + json_data[0]['a']
-    return(quote)
 
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
