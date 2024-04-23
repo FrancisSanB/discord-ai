@@ -3,6 +3,7 @@ from discord.ext import commands,tasks
 import os
 from dotenv import load_dotenv
 import yt_dlp as youtube_dl
+from deep_translator import GoogleTranslator
 
 load_dotenv()
 
@@ -133,6 +134,15 @@ def get_quote():
     json_data = json.loads(response.text)
     quote = json_data[0]['q'] + " -" + json_data[0]['a']
     return(quote)
+
+@bot.command(name='translate', help='translates text')
+async def translate(ctx, *, prompt: str):
+    text = translate_text(prompt)
+    await ctx.channel.send(text)
+
+def translate_text(text):
+    translated = GoogleTranslator(source='auto', target='de').translate(text)
+    return translated
 
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
