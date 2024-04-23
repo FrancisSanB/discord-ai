@@ -2,9 +2,8 @@ import discord
 from discord.ext import commands,tasks
 import os
 from dotenv import load_dotenv
-import youtube_dl as youtube_dl
-import requests
-import json
+import yt_dlp as youtube_dl
+from deep_translator import GoogleTranslator
 
 load_dotenv()
 
@@ -125,16 +124,25 @@ async def stop(ctx):
     else:
         await ctx.send("The bot is not playing anything at the moment.")
 
-@bot.command(name='quote', help='it generates a new quote to inspire individual to achieve their dream')
-async def quote(ctx):
+@bot.command(name='quote', help='inspires with a quote')
+async def on_message(ctx):
     quote = get_quote()
-    await ctx.send(quote)
+    await ctx.channel.send(quote)
 
 def get_quote():
     response = requests.get("https://zenquotes.io/api/random")
     json_data = json.loads(response.text)
-    quote = json_data[0]['q'] + " - " + json_data[0]['a']
-    return quote
+    quote = json_data[0]['q'] + " -" + json_data[0]['a']
+    return(quote)
+
+@bot.command(name='translate', help='translates text')
+async def translate(ctx, *, prompt: str):
+    text = translate_text(prompt)
+    await ctx.channel.send(text)
+
+def translate_text(text):
+    translated = GoogleTranslator(source='auto', target='de').translate(text)
+    return translated
 
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
