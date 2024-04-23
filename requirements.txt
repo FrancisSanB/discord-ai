@@ -3,3 +3,8 @@ discord.py
 python-dotenv
 youtube-dl
 PyNaCl
+SpeechRecognition
+pydub
+deep-translator
+gTTs
+pytesseract
