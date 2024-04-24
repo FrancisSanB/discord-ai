@@ -131,6 +131,11 @@ async def on_message(ctx):
     quote = get_quote()
     await ctx.channel.send(quote)
 
+@bot.command(name='speak', help='text to speech')
+async def tts(ctx, *, message: str):
+    # Send a TTS message to the voice channel
+    await ctx.send(message, tts=True)
+
 @bot.command(name='translate', help='translates text')
 async def translate(ctx, *, prompt: str):
     text = translate_text(prompt)
