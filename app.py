@@ -3,6 +3,7 @@ from discord.ext import commands,tasks
 import os
 from dotenv import load_dotenv
 import yt_dlp as youtube_dl
+import asyncio
 
 from functions import *
 
