@@ -8,3 +8,4 @@ pydub
 deep-translator
 gTTs
 pytesseract
+yt_dlp

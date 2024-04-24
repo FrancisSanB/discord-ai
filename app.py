@@ -135,5 +135,26 @@ async def translate(ctx, *, prompt: str):
     text = translate_text(prompt)
     await ctx.channel.send(text)
 
+@bot.command(name='audio-to-text', help='goes from audio to text')
+async def audiototext(ctx):
+    # Check if the user attached an audio file
+    if len(ctx.message.attachments) == 0:
+        await ctx.send("Please attach an audio file.")
+        return
+
+    # Get the first attached file
+    audio_file = ctx.message.attachments[0]
+
+    # Save the audio file locally
+    audio_path = "temp_audio.wav"
+
+    # Simulate typing
+    async with ctx.typing():
+        # Convert audio to text
+        text = audiotext(audio_path)
+
+    # Send the text back to the user
+    await ctx.send(text)
+
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
