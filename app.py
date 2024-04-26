@@ -10,6 +10,8 @@ load_dotenv()
 
 # Get the API token from the .env file.
 DISCORD_TOKEN = os.getenv("discord_token")
+FFMPEG_PATH = r"*"
+TESSERACT_PATH = r'*'
 
 intents = discord.Intents().all()
 client = discord.Client(intents=intents)
@@ -92,9 +94,9 @@ async def play(ctx,url):
             # Download and play the audio
             async with ctx.typing():
                 filename = await YTDLSource.from_url(url, loop=bot.loop)
-                ctx.voice_client.play(discord.FFmpegPCMAudio(executable=r"C:\Users\f_alf\Documents\ai-club\discord-ai\ffmpeg.exe", source=filename))
+                ctx.voice_client.play(discord.FFmpegPCMAudio(executable=FFMPEG_PATH, source=filename))
             
-            await ctx.send('**Now playing:** {}'.format(filename))
+            await ctx.send('**Now playing:** {}'.format(url))
         else:
             await ctx.send("You need to be in a voice channel to use this command.")
     except Exception as e:
@@ -224,7 +226,7 @@ async def extract_text(ctx):
         await attachment.save(image_path)
 
         async with ctx.typing():
-            result = imagetotext(image_path)
+            result = imagetotext(image_path, TESSERACT_PATH)
 
         # Send the result back to the user
         await ctx.send(f"Extracted text:\n```\n{result}\n```")
@@ -248,7 +250,7 @@ async def audiotranstext(ctx, target_language: str):
         await attachment.save(image_path)
 
         async with ctx.typing():
-            script = imagetotext(image_path)
+            script = imagetotext(image_path, TESSERACT_PATH)
             text = translate_text(script, target_language)
 
         # Send the text back to the user

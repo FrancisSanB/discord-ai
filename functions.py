@@ -43,9 +43,7 @@ def texttomp3(text):
     myobj = gTTS(text=text, lang='en', slow=False)
     myobj.save("output.mp3")
 
-def imagetotext(filename):
-    path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
+def imagetotext(filename, path_to_tesseract):
     pytesseract.pytesseract.tesseract_cmd = path_to_tesseract
 
     img = Image.open(filename)
