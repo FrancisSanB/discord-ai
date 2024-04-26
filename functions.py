@@ -3,6 +3,8 @@ import json
 import requests
 import speech_recognition as sr
 from gtts import gTTS
+from PIL import Image
+import pytesseract
 
 def get_quote():
     response = requests.get("https://zenquotes.io/api/random")
@@ -40,3 +42,14 @@ def audiotext(filename):
 def texttomp3(text):
     myobj = gTTS(text=text, lang='en', slow=False)
     myobj.save("output.mp3")
+
+def imagetotext(filename):
+    path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+
+    pytesseract.pytesseract.tesseract_cmd = path_to_tesseract
+
+    img = Image.open(filename)
+
+    result = pytesseract.image_to_string(img)
+
+    return result

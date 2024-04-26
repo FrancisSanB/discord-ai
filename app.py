@@ -207,6 +207,29 @@ async def playtext(ctx, *, prompt: str):
         print(e)
         await ctx.send("An error occurred while trying to play the audio.")
 
+@bot.command(name='image-text', help='extracts the text from an image')
+async def extract_text(ctx):
+    try:
+        # Check if there are any attachments
+        if not ctx.message.attachments:
+            await ctx.send("Please attach an image to extract text.")
+            return
+
+        # Get the first attachment (assuming only one image is attached)
+        attachment = ctx.message.attachments[0]
+
+        # Save the attachment to a temporary file
+        image_path = "temp_image.jpg"
+        await ctx.send("Downloading the image...")
+        await attachment.save(image_path)
+
+        async with ctx.typing():
+            result = imagetotext(image_path)
+
+        # Send the result back to the user
+        await ctx.send(f"Extracted text:\n```\n{result}\n```")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
 
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
