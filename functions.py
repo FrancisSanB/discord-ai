@@ -9,18 +9,29 @@ def get_quote():
     quote = json_data[0]['q'] + " -" + json_data[0]['a']
     return(quote)
 
-def translate_text(text):
-    translated = GoogleTranslator(source='auto', target='de').translate(text)
-    return translated
+def translate_text(text, target):
+    try:
+        translated = GoogleTranslator(source='auto', target=target).translate(text)
+        return translated
+    except:
+        return "ERROR"
 
 def audiotext(filename):
-    # initialize the recognizer
-    r = sr.Recognizer()
+    try:
+        # Initialize the recognizer
+        r = sr.Recognizer()
 
-    # open the file
-    with sr.AudioFile(filename) as source:
-        # listen for the data (load audio to memory)
-        audio_data = r.record(source)
-        # recognize (convert from speech to text)
-        text = r.recognize_google(audio_data)
-        return text
+        # Open the file
+        with sr.AudioFile(filename) as source:
+            # Listen for the data (load audio to memory)
+            audio_data = r.record(source)
+            # Recognize (convert from speech to text)
+            text = r.recognize_google(audio_data)
+            return text
+        
+    except FileNotFoundError:
+        return "Error: Audio file not found. Please make sure the file exists."
+    except sr.UnknownValueError:
+        return "Sorry, I couldn't recognize any speech in the audio."
+    except sr.RequestError as e:
+        return f"Error during recognition: {e}"
