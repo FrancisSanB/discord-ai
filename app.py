@@ -231,5 +231,30 @@ async def extract_text(ctx):
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
 
+@bot.command(name='image-translate-text', help='extracts the text from an image and translates it')
+async def audiotranstext(ctx, target_language: str):
+    try:
+        # Check if there are any attachments
+        if not ctx.message.attachments:
+            await ctx.send("Please attach an image to extract text.")
+            return
+
+        # Get the first attachment (assuming only one image is attached)
+        attachment = ctx.message.attachments[0]
+
+        # Save the attachment to a temporary file
+        image_path = "temp_image.jpg"
+        await ctx.send("Downloading the image...")
+        await attachment.save(image_path)
+
+        async with ctx.typing():
+            script = imagetotext(image_path)
+            text = translate_text(script, target_language)
+
+        # Send the text back to the user
+        await ctx.send(f"Translated text ({target_language}): {text}")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
+
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
