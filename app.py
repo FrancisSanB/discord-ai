@@ -183,5 +183,30 @@ async def audiotranstext(ctx, target_language: str):
     # Send the text back to the user
     await ctx.send(f"Translated text ({target_language}): {text}")
 
+@bot.command(name='play-text', help='Plays text in a voice channel')
+async def playtext(ctx, *, prompt: str):
+    try:
+        # Get the user's voice channel
+        voice_channel = ctx.author.voice.channel
+
+        if voice_channel:
+            # Connect to the user's voice channel or move if already connected
+            voice_client = ctx.voice_client or await voice_channel.connect()
+
+            # Download and play the audio
+            async with ctx.typing():
+                texttomp3(prompt)
+                voice_client.play(discord.FFmpegPCMAudio("output.mp3"))
+
+            await ctx.send(f"**Now playing:** {prompt}")
+        else:
+            await ctx.send("You need to be in a voice channel to use this command.")
+    except AttributeError:
+        await ctx.send("You need to be in a voice channel to use this command.")
+    except Exception as e:
+        print(e)
+        await ctx.send("An error occurred while trying to play the audio.")
+
+
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)

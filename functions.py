@@ -2,6 +2,7 @@ from deep_translator import GoogleTranslator
 import json
 import requests
 import speech_recognition as sr
+from gtts import gTTS
 
 def get_quote():
     response = requests.get("https://zenquotes.io/api/random")
@@ -35,3 +36,7 @@ def audiotext(filename):
         return "Sorry, I couldn't recognize any speech in the audio."
     except sr.RequestError as e:
         return f"Error during recognition: {e}"
+    
+def texttomp3(text):
+    myobj = gTTS(text=text, lang='en', slow=False)
+    myobj.save("output.mp3")
