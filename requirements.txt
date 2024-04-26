@@ -1,5 +1,10 @@
+torch
 discord
 discord.py
+discord.py==1.6.0
+ibm-watsonx-ai
+langchain
+langchain_ibm
 python-dotenv
 youtube-dl
 PyNaCl
