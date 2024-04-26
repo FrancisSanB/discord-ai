@@ -4,8 +4,6 @@ import os
 from dotenv import load_dotenv
 import yt_dlp as youtube_dl
 
-from functions import *
-
 load_dotenv()
 
 # Get the API token from the .env file.
@@ -137,3 +135,30 @@ async def translate(ctx, *, prompt: str):
 
 if __name__ == "__main__" :
     bot.run(DISCORD_TOKEN)
+
+@bot.command()
+async def audio(ctx):
+    # Check if an attachment exists
+    if ctx.message.attachments:
+        attachment = ctx.message.attachments[0]
+        filename = attachment.filename
+
+        # Initialize the recognizer
+        r = sr.Recognizer()
+
+        # Download the attachment
+        with open(filename, "wb") as file:
+            await attachment.save(file)
+
+        # Open the file and recognize speech
+        with sr.AudioFile(filename) as source:
+            audio_data = r.record(source)
+            try:
+                text = r.recognize_google(audio_data)
+                await ctx.send(f"Transcribed text: {text}")
+            except sr.UnknownValueError:
+                await ctx.send("Sorry, I couldn't recognize any speech in the audio.")
+    else:
+        await ctx.send("Please attach an audio file to use this command.")
+
+@bot.command(name='translate', help='translates text')
