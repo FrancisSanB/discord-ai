@@ -2,6 +2,7 @@ from deep_translator import GoogleTranslator
 import json
 import requests
 import speech_recognition as sr
+# from transformers import pipeline
 from gtts import gTTS
 from PIL import Image
 import pytesseract
